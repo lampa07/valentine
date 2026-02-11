@@ -1,49 +1,68 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
     <title>Для тебя ❤️</title>
     <style>
-        body {
-            
+       body {
+    margin: 0;
+    /* Используем dvh (dynamic viewport height) для мобильных браузеров */
+    height: 100vh;
+    height: 100dvh; 
     background: radial-gradient(circle at center, #ff7eb3 0%, #ff758c 100%);
-    /* Это создаст эффект легкого свечения за открыткой */
-            margin: 0;
-            height: 100vh;
-            background: linear-gradient(135deg, #ff758c, #ff7eb3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-        }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+}
 
-        .card {
-            background: white;
-            padding: 30px 40px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            max-width: 320px;
-            z-index: 2;
-        }
+/* Основная карточка */
+.card {
+    background: white;
+    padding: 30px 25px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    width: 85%;       /* Ширина на мобилках */
+    max-width: 350px; /* Максимальная ширина на ноуте */
+    z-index: 2;
+    margin-bottom: 5dvh; /* Сдвигаем чуть выше центра для визуального баланса */
+}
 
-        h1 {
-            color: #ff4d6d;
-        }
+/* Заголовки */
+h1 {
+    color: #ff4d6d;
+    font-size: 28px; /* Увеличили размер */
+    margin-bottom: 15px;
+}
 
-        button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 25px;
-            background: #ff4d6d;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+/* Основной текст */
+p {
+    font-size: 18px; /* Сделали текст крупнее и читабельнее */
+    line-height: 1.5;
+    color: #444;
+}
 
+      /* Кнопка */
+button {
+    margin-top: 20px;
+    padding: 15px 30px; /* Увеличили область нажатия (удобно для пальца) */
+    border: none;
+    border-radius: 50px;
+    background: #ff4d6d;
+    color: white;
+    font-size: 18px; /* Крупный текст на кнопке */
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+}
+
+button:active {
+    transform: scale(0.95); /* Эффект нажатия на телефоне */
+}
         button:hover {
             background: #e63950;
         }
@@ -115,17 +134,27 @@
     visibility: visible;
 }
 
+/* Модальное окно (Сюрприз) */
 .modal-content {
     background: white;
-    padding: 30px 40px;
-    border-radius: 20px;
+    padding: 40px 30px;
+    border-radius: 24px;
     text-align: center;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-    animation: pop 0.4s ease;
-    max-width: 300px;
+    width: 80%;
+    max-width: 320px;
 }
 
+.modal-content h2 {
+    color: #ff4d6d;
+    font-size: 26px;
+}
 
+/* Специальные правки для больших экранов (ноутбуков) */
+@media (min-width: 768px) {
+    h1 { font-size: 32px; }
+    p { font-size: 19px; }
+    .card { padding: 40px; }
+}
         @keyframes pop {
             from { transform: scale(0.7); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
@@ -246,3 +275,4 @@ setInterval(() => {
 
 </body>
 </html>
+
