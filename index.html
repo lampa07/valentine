@@ -89,6 +89,14 @@ button:active {
     animation: explode 0.6s ease-out forwards;
 }
 
+.final-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 5000; /* выше модалки */
+    animation: finalExplode 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+
 @keyframes float {
     0% {
         transform: translateY(105vh) scale(0.7);
@@ -111,6 +119,21 @@ button:active {
         opacity: 0; 
     }
 }
+     
+@keyframes finalExplode {
+    0% {
+        transform: translate(0, 0) scale(0.3);
+        opacity: 0;
+    }
+    15% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--dx), var(--dy)) scale(1.4);
+        opacity: 0;
+    }
+}
+
         /* Модальное окно */
         .modal {
     position: fixed;
@@ -281,21 +304,23 @@ setInterval(() => {
     }, duration * 1000);
 }, spawnInterval);
 function massiveExplosion() {
-    const totalHearts = 60; // сколько сердечек
+    const totalHearts = 90;
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
 
+    const types = ["❤️","💖","💕","💗"];
+
     for (let i = 0; i < totalHearts; i++) {
         const heart = document.createElement("div");
-        heart.className = "particle";
-        heart.innerHTML = "💖";
+        heart.className = "final-particle"; // ВАЖНО — новый класс
+        heart.innerHTML = types[Math.floor(Math.random() * types.length)];
 
         heart.style.left = centerX + "px";
         heart.style.top = centerY + "px";
-        heart.style.fontSize = "20px";
+        heart.style.fontSize = (22 + Math.random() * 18) + "px";
 
         const angle = Math.random() * 2 * Math.PI;
-        const distance = 300 + Math.random() * 300;
+        const distance = 400 + Math.random() * 400;
 
         const dx = Math.cos(angle) * distance + "px";
         const dy = Math.sin(angle) * distance + "px";
@@ -304,7 +329,7 @@ function massiveExplosion() {
         heart.style.setProperty('--dy', dy);
 
         document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 1000);
+        setTimeout(() => heart.remove(), 1800);
     }
 }
 
@@ -316,4 +341,5 @@ function massiveExplosion() {
 
 </body>
 </html>
+
 
