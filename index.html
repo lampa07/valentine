@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/833/833472.png">
     <title>Для тебя ❤️</title>
     <style>
        body {
@@ -188,23 +189,21 @@ button:active {
 </div>
 
 <script>
- function openModal() {
+// 1. Открытие окна и запуск музыки
+function openModal() {
     const modal = document.getElementById("modal");
     const music = document.getElementById("bgMusic");
 
-    // Открываем окно
     modal.classList.add("active");
 
-    // Если музыка еще не играет или на паузе — запускаем
     if (music.paused) {
         music.volume = 0;
         music.play().then(() => {
-            // Плавное появление звука только при старте
             setTimeout(() => {
                 let vol = 0;
                 const interval = setInterval(() => {
                     if (vol < 0.35) {
-                        vol += 0.01;
+                        vol = Math.round((vol + 0.01) * 100) / 100;
                         music.volume = vol;
                     } else {
                         clearInterval(interval);
@@ -215,13 +214,54 @@ button:active {
     }
 }
 
-function closeModal() {
-    document.getElementById("modal").classList.remove("active");
+// 2. Функция создания одного летящего сердечка (используется для салюта)
+function createHeart(x, y) {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    const types = ["❤️", "💖", "💕", "💗"];
+    heart.innerHTML = types[Math.floor(Math.random() * types.length)];
+    
+    // Устанавливаем координаты старта (центр экрана)
+    heart.style.left = x + "px";
+    heart.style.top = "100vh"; // Начинает снизу
+    
+    // Рандомный разлет по горизонтали
+    const randomX = (Math.random() - 0.5) * 200;
+    heart.style.marginLeft = randomX + "px";
+
+    const size = 15 + Math.random() * 20;
+    heart.style.fontSize = size + "px";
+    
+    const duration = 3 + Math.random() * 3;
+    heart.style.animationDuration = duration + "s";
+    
+    document.body.appendChild(heart);
+
+    // Удаление и взрыв в конце полета
+    setTimeout(() => {
+        const rect = heart.getBoundingClientRect();
+        createExplosion(rect.left, rect.top);
+        heart.remove();
+    }, duration * 1000);
 }
 
-// Функция для создания взрыва
+// 3. Закрытие окна с салютом
+function closeModal() {
+    document.getElementById("modal").classList.remove("active");
+
+    const screenX = window.innerWidth / 2;
+    const screenY = window.innerHeight / 2;
+
+    // Запускаем 30 сердечек из центра
+    for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+            createHeart(screenX, screenY);
+        }, i * 40);
+    }
+}
+
+// 4. Функция взрыва (частицы)
 function createExplosion(x, y) {
-    // На мобилках делаем чуть меньше осколков для производительности
     const isMobile = window.innerWidth < 768;
     const particlesCount = isMobile ? 5 : 8; 
     
@@ -233,7 +273,6 @@ function createExplosion(x, y) {
         particle.style.top = y + "px";
         particle.style.fontSize = isMobile ? "12px" : "16px";
 
-        // Разлет подстроен под размер экрана
         const range = isMobile ? 100 : 200;
         const dx = (Math.random() - 0.5) * range + "px";
         const dy = (Math.random() - 0.5) * range + "px";
@@ -245,38 +284,16 @@ function createExplosion(x, y) {
         setTimeout(() => particle.remove(), 600);
     }
 }
-// Определяем частоту появления в зависимости от ширины экрана
-// На широких экранах (планшеты/ПК) пускаем чаще, на узких — чуть реже
+
+// 5. Фоновый поток сердечек
 const screenWidth = window.innerWidth;
 const spawnInterval = screenWidth > 1024 ? 250 : (screenWidth > 768 ? 350 : 450);
 
 setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    
-    const types = ["❤️", "💖", "💕", "💗"];
-    heart.innerHTML = types[Math.floor(Math.random() * types.length)];
-    
-    const startX = Math.random() * 100;
-    heart.style.left = startX + "vw";
-    
-    // На планшете можно чуть увеличить максимальный размер сердечек
-    const size = (15 + Math.random() * (screenWidth > 768 ? 30 : 20));
-    heart.style.fontSize = size + "px";
-    
-    const duration = 6 + Math.random() * 6; 
-    heart.style.animationDuration = duration + "s";
-    
-    document.body.appendChild(heart);
-
-    setTimeout(() => {
-        const xPos = (startX / 100) * window.innerWidth;
-        const yPos = window.innerHeight * 0.1; 
-        createExplosion(xPos, yPos); 
-        heart.remove();
-    }, duration * 1000);
+    // Просто вызываем создание сердечка в случайном месте по горизонтали
+    const x = Math.random() * window.innerWidth;
+    createHeart(x, window.innerHeight);
 }, spawnInterval);
-
 
 </script>
 <audio id="bgMusic" loop>
@@ -285,6 +302,7 @@ setInterval(() => {
 
 </body>
 </html>
+
 
 
 
