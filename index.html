@@ -171,7 +171,7 @@ button:active {
 <div class="card">
     <h1>С 14 февраля ❤️</h1>
     <p>
-        Я мог подарить что-то обычное,<br>
+        Я не мог подарить что-то физическое,<br>
         но решил написать тебе маленькую страницу.<br><br>
         Ты — мой самый любимый баг,<br>
         который я никогда не хочу фиксить 💕
@@ -189,11 +189,9 @@ button:active {
 </div>
 
 <script>
-// 1. Открытие окна и запуск музыки
 function openModal() {
     const modal = document.getElementById("modal");
     const music = document.getElementById("bgMusic");
-
     modal.classList.add("active");
 
     if (music.paused) {
@@ -210,60 +208,58 @@ function openModal() {
                     }
                 }, 100);
             }, 200);
-        }).catch(e => console.log("Ошибка звука:", e));
+        }).catch(e => console.log("Sound error:", e));
     }
 }
 
-// 2. Функция создания одного летящего сердечка (используется для салюта)
-function createHeart(x, y) {
+// Универсальная функция создания сердечка
+function createHeart(x, y, isExplosion = false) {
     const heart = document.createElement("div");
     heart.className = "heart";
     const types = ["❤️", "💖", "💕", "💗"];
     heart.innerHTML = types[Math.floor(Math.random() * types.length)];
     
-    // Устанавливаем координаты старта (центр экрана)
     heart.style.left = x + "px";
-    heart.style.top = "100vh"; // Начинает снизу
     
-    // Рандомный разлет по горизонтали
-    const randomX = (Math.random() - 0.5) * 200;
-    heart.style.marginLeft = randomX + "px";
+    // Если это салют - начинаем из центра, если фон - снизу
+    if (isExplosion) {
+        heart.style.top = y + "px";
+    } else {
+        heart.style.top = "100vh"; 
+    }
 
     const size = 15 + Math.random() * 20;
     heart.style.fontSize = size + "px";
     
-    const duration = 3 + Math.random() * 3;
+    const duration = 4 + Math.random() * 4;
     heart.style.animationDuration = duration + "s";
     
     document.body.appendChild(heart);
 
-    // Удаление и взрыв в конце полета
     setTimeout(() => {
         const rect = heart.getBoundingClientRect();
         createExplosion(rect.left, rect.top);
         heart.remove();
-    }, duration * 1000);
+    }, duration * 900); // Чуть раньше конца анимации для красоты
 }
 
-// 3. Закрытие окна с салютом
 function closeModal() {
     document.getElementById("modal").classList.remove("active");
-
     const screenX = window.innerWidth / 2;
     const screenY = window.innerHeight / 2;
 
-    // Запускаем 30 сердечек из центра
+    // Мощный салют при закрытии
     for (let i = 0; i < 30; i++) {
         setTimeout(() => {
-            createHeart(screenX, screenY);
-        }, i * 40);
+            // Передаем true, чтобы летели из центра
+            createHeart(screenX + (Math.random() - 0.5) * 100, screenY, true);
+        }, i * 30);
     }
 }
 
-// 4. Функция взрыва (частицы)
 function createExplosion(x, y) {
     const isMobile = window.innerWidth < 768;
-    const particlesCount = isMobile ? 5 : 8; 
+    const particlesCount = 6; 
     
     for (let i = 0; i < particlesCount; i++) {
         const particle = document.createElement("div");
@@ -271,9 +267,9 @@ function createExplosion(x, y) {
         particle.innerHTML = "❤️";
         particle.style.left = x + "px";
         particle.style.top = y + "px";
-        particle.style.fontSize = isMobile ? "12px" : "16px";
+        particle.style.fontSize = "12px";
 
-        const range = isMobile ? 100 : 200;
+        const range = isMobile ? 80 : 150;
         const dx = (Math.random() - 0.5) * range + "px";
         const dy = (Math.random() - 0.5) * range + "px";
         
@@ -285,16 +281,11 @@ function createExplosion(x, y) {
     }
 }
 
-// 5. Фоновый поток сердечек
-const screenWidth = window.innerWidth;
-const spawnInterval = screenWidth > 1024 ? 250 : (screenWidth > 768 ? 350 : 450);
-
+// Фоновые сердечки
 setInterval(() => {
-    // Просто вызываем создание сердечка в случайном месте по горизонтали
     const x = Math.random() * window.innerWidth;
-    createHeart(x, window.innerHeight);
-}, spawnInterval);
-
+    createHeart(x, window.innerHeight, false);
+}, 450);
 </script>
 <audio id="bgMusic" loop>
     <source src="music.mp3" type="audio/mpeg">
@@ -302,6 +293,7 @@ setInterval(() => {
 
 </body>
 </html>
+
 
 
 
