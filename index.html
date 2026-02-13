@@ -217,7 +217,10 @@ button:active {
 }
 
 function closeModal() {
-    document.getElementById("modal").classList.remove("active");
+    const modal = document.getElementById("modal");
+    modal.classList.remove("active");
+
+    massiveExplosion();
 }
 
 // Функция для создания взрыва
@@ -277,6 +280,33 @@ setInterval(() => {
         heart.remove();
     }, duration * 1000);
 }, spawnInterval);
+function massiveExplosion() {
+    const totalHearts = 60; // сколько сердечек
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    for (let i = 0; i < totalHearts; i++) {
+        const heart = document.createElement("div");
+        heart.className = "particle";
+        heart.innerHTML = "💖";
+
+        heart.style.left = centerX + "px";
+        heart.style.top = centerY + "px";
+        heart.style.fontSize = "20px";
+
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 300 + Math.random() * 300;
+
+        const dx = Math.cos(angle) * distance + "px";
+        const dy = Math.sin(angle) * distance + "px";
+
+        heart.style.setProperty('--dx', dx);
+        heart.style.setProperty('--dy', dy);
+
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 1000);
+    }
+}
 
 
 </script>
@@ -286,3 +316,4 @@ setInterval(() => {
 
 </body>
 </html>
+
