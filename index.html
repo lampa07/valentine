@@ -21,45 +21,43 @@
 /* Основная карточка */
 .card {
     background: white;
-    padding: 30px 25px;
-    border-radius: 24px;
+    padding: 20px 20px; /* Уменьшили отступы внутри */
+    border-radius: 20px;
     text-align: center;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-    width: 85%;       /* Ширина на мобилках */
-    max-width: 350px; /* Максимальная ширина на ноуте */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    width: 80%;         /* Чуть меньше ширина */
+    max-width: 280px;   /* Строгое ограничение ширины */
     z-index: 2;
-    margin-bottom: 5dvh; /* Сдвигаем чуть выше центра для визуального баланса */
+    margin-bottom: 2dvh; 
 }
 
-/* Заголовки */
+/* Заголовок чуть меньше */
 h1 {
     color: #ff4d6d;
-    font-size: 28px; /* Увеличили размер */
-    margin-bottom: 15px;
+    font-size: 24px; 
+    margin: 0 0 10px 0;
 }
 
-/* Основной текст */
+/* Текст — оптимальный баланс */
 p {
-    font-size: 18px; /* Сделали текст крупнее и читабельнее */
-    line-height: 1.5;
+    font-size: 16px; 
+    line-height: 1.4;
+    margin: 10px 0;
     color: #444;
 }
 
-      /* Кнопка */
+/* Кнопка — аккуратная, но удобная */
 button {
-    margin-top: 20px;
-    padding: 15px 30px; /* Увеличили область нажатия (удобно для пальца) */
+    margin-top: 10px;
+    padding: 12px 24px;
     border: none;
     border-radius: 50px;
     background: #ff4d6d;
     color: white;
-    font-size: 18px; /* Крупный текст на кнопке */
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    transition: transform 0.2s, background 0.3s;
-    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
 }
-
 button:active {
     transform: scale(0.95); /* Эффект нажатия на телефоне */
 }
@@ -134,19 +132,20 @@ button:active {
     visibility: visible;
 }
 
-/* Модальное окно (Сюрприз) */
+/* Модальное окно — под размер контента */
 .modal-content {
     background: white;
-    padding: 40px 30px;
-    border-radius: 24px;
+    padding: 25px 20px;
+    border-radius: 20px;
     text-align: center;
-    width: 80%;
-    max-width: 320px;
+    width: 75%;
+    max-width: 260px;
 }
 
 .modal-content h2 {
     color: #ff4d6d;
-    font-size: 26px;
+    font-size: 22px;
+    margin-bottom: 10px;
 }
 
 /* Специальные правки для больших экранов (ноутбуков) */
@@ -275,4 +274,5 @@ setInterval(() => {
 
 </body>
 </html>
+
 
