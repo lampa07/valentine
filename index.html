@@ -93,7 +93,7 @@ button:active {
     position: fixed;
     pointer-events: none;
     z-index: 5000; /* выше модалки */
-    animation: finalExplode 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: finalExplode 3s ease-out forwards;
 }
 
 
@@ -119,20 +119,20 @@ button:active {
         opacity: 0; 
     }
 }
-     
 @keyframes finalExplode {
     0% {
-        transform: translate(0, 0) scale(0.3);
+        transform: translate(0, 0) scale(0.2);
         opacity: 0;
     }
-    15% {
+    10% {
         opacity: 1;
     }
     100% {
-        transform: translate(var(--dx), var(--dy)) scale(1.4);
+        transform: translate(var(--dx), var(--dy)) scale(1.2);
         opacity: 0;
     }
 }
+
 
         /* Модальное окно */
         .modal {
@@ -329,7 +329,7 @@ function massiveExplosion() {
         heart.style.setProperty('--dy', dy);
 
         document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 1800);
+        setTimeout(() => heart.remove(), 3000);
     }
 }
 
@@ -341,5 +341,6 @@ function massiveExplosion() {
 
 </body>
 </html>
+
 
 
