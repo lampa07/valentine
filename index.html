@@ -1,97 +1,167 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/833/833472.png">
     <title>Для тебя ❤️</title>
     <style>
-        body {
-            margin: 0;
-            height: 100dvh; 
-            background: radial-gradient(circle at center, #ff7eb3 0%, #ff758c 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-            position: relative;
+       body {
+    margin: 0;
+    /* Используем dvh (dynamic viewport height) для мобильных браузеров */
+    height: 100vh;
+    height: 100dvh; 
+    background: radial-gradient(circle at center, #ff7eb3 0%, #ff758c 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+}
+
+/* Основная карточка */
+.card {
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для стиля */
+    backdrop-filter: blur(10px); /* Эффект матового стекла */
+    padding: 15px 20px; /* Минимум отступов */
+    border-radius: 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 75%;
+    max-width: 250px; /* Еще уже */
+    z-index: 2;
+}
+
+h1 {
+    font-size: 20px; /* Компактный заголовок */
+    margin: 5px 0;
+}
+
+p {
+    font-size: 14px; /* Маленький, но читаемый текст */
+    line-height: 1.3;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+/* Кнопка — аккуратная, но удобная */
+button {
+    margin-top: 10px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 50px;
+    background: #ff4d6d;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+button:active {
+    transform: scale(0.95); /* Эффект нажатия на телефоне */
+}
+        button:hover {
+            background: #e63950;
         }
 
-        .card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
-            border-radius: 20px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            width: 75%;
-            max-width: 250px;
-            z-index: 10;
-        }
+        
+       /* Сердечки */
+/* Основное сердечко */
+/* Сердечки */
+.heart {
+    position: fixed; /* Чтобы не зависело от скролла */
+    top: 0;
+    color: #fff;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1;
+    will-change: transform; /* Оптимизация для мобилок */
+    animation: float linear forwards; 
+}
 
-        h1 { font-size: 20px; margin: 5px 0; color: white; }
-        p { font-size: 14px; line-height: 1.3; color: white; }
+/* Осколки */
+.particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    animation: explode 0.6s ease-out forwards;
+}
 
-        button {
-            margin-top: 10px;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 50px;
-            background: #ff4d6d;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 11;
-        }
+@keyframes float {
+    0% {
+        transform: translateY(105vh) scale(0.7);
+        opacity: 0;
+    }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% {
+        /* Взрыв на уровне 10% от верха (удобно для глаз на телефоне) */
+        transform: translateY(10vh) scale(1.1);
+        opacity: 1;
+    }
+}
 
-        .heart {
-            position: absolute; /* Изменили с fixed на absolute */
-            user-select: none;
-            pointer-events: none;
-            z-index: 1;
-            will-change: transform;
-            animation: floatUp linear forwards; 
-        }
-
-        .particle {
-            position: absolute;
-            pointer-events: none;
-            z-index: 1;
-            animation: explode 0.6s ease-out forwards;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(0.7); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) scale(1.1); opacity: 0; }
-        }
-
-        @keyframes explode {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
-        }
-
+@keyframes explode {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { 
+        /* Уменьшили разлет для узких экранов */
+        transform: translate(var(--dx), var(--dy)) scale(0); 
+        opacity: 0; 
+    }
+}
+        /* Модальное окно */
         .modal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            display: none; /* Изменили для надежности */
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
-        .modal.active { display: flex; }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 999;
+}
 
-        .modal-content {
-            background: white;
-            padding: 25px 20px;
-            border-radius: 20px;
-            text-align: center;
-            width: 75%;
-            max-width: 260px;
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Модальное окно — под размер контента */
+.modal-content {
+    background: white;
+    padding: 25px 20px;
+    border-radius: 20px;
+    text-align: center;
+    width: 75%;
+    max-width: 260px;
+}
+
+.modal-content h2 {
+    color: #ff4d6d;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+/* Специальные правки для больших экранов (ноутбуков) */
+@media (min-width: 768px) {
+    h1 { font-size: 32px; }
+    p { font-size: 19px; }
+    .card { padding: 40px; }
+}
+        @keyframes pop {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            margin-top: 15px;
+            background: #ff4d6d;
         }
     </style>
 </head>
@@ -99,101 +169,122 @@
 
 <div class="card">
     <h1>С 14 февраля ❤️</h1>
-    <p>Я не мог подарить что-то физическое, но решил написать тебе страницу. Ты — мой любимый баг 💕</p>
+    <p>
+        Я мог подарить что-то обычное,<br>
+        но решил написать тебе маленькую страницу.<br><br>
+        Ты — мой самый любимый баг,<br>
+        который я никогда не хочу фиксить 💕
+    </p>
     <button onclick="openModal()">Нажми 👀</button>
 </div>
 
+<!-- Модальное окно -->
 <div class="modal" id="modal">
     <div class="modal-content">
         <h2>Сюрприз 💖</h2>
         <p>Я тебя очень люблю ❤️</p>
-        <button onclick="closeModal()">Я тебя тоже!</button>
+        <button class="close-btn" onclick="closeModal()">Я тебя тоже очень люблю</button>
     </div>
 </div>
 
-<audio id="bgMusic" loop>
-    <source src="music.mp3" type="audio/mpeg">
-</audio>
-
 <script>
-const music = document.getElementById("bgMusic");
+ function openModal() {
+    const modal = document.getElementById("modal");
+    const music = document.getElementById("bgMusic");
 
-function openModal() {
-    document.getElementById("modal").classList.add("active");
+    // Открываем окно
+    modal.classList.add("active");
+
+    // Если музыка еще не играет или на паузе — запускаем
     if (music.paused) {
         music.volume = 0;
         music.play().then(() => {
-            let vol = 0;
-            const interval = setInterval(() => {
-                if (vol < 0.35) {
-                    vol = Math.round((vol + 0.01) * 100) / 100;
-                    music.volume = vol;
-                } else { clearInterval(interval); }
-            }, 100);
-        }).catch(e => console.log(e));
+            // Плавное появление звука только при старте
+            setTimeout(() => {
+                let vol = 0;
+                const interval = setInterval(() => {
+                    if (vol < 0.35) {
+                        vol += 0.01;
+                        music.volume = vol;
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 100);
+            }, 200);
+        }).catch(e => console.log("Ошибка звука:", e));
     }
-}
-
-function createHeart(x, y, isExplosion = false) {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = ["❤️", "💖", "💕", "💗"][Math.floor(Math.random() * 4)];
-    
-    heart.style.left = x + "px";
-    heart.style.top = y + "px"; // Теперь всегда ставим через JS
-
-    const size = 15 + Math.random() * 20;
-    heart.style.fontSize = size + "px";
-    
-    const duration = isExplosion ? (2 + Math.random() * 2) : (5 + Math.random() * 5);
-    heart.style.animationDuration = duration + "s";
-    
-    document.body.appendChild(heart);
-    setTimeout(() => {
-        if (!isExplosion) {
-            const rect = heart.getBoundingClientRect();
-            createExplosion(rect.left, rect.top);
-        }
-        heart.remove();
-    }, duration * 1000);
 }
 
 function closeModal() {
     document.getElementById("modal").classList.remove("active");
-    const screenX = window.innerWidth / 2;
-    const screenY = window.innerHeight / 2;
-    for (let i = 0; i < 30; i++) {
-        setTimeout(() => {
-            createHeart(screenX + (Math.random() - 0.5) * 150, screenY + (Math.random() - 0.5) * 150, true);
-        }, i * 30);
-    }
 }
 
+// Функция для создания взрыва
 function createExplosion(x, y) {
-    for (let i = 0; i < 6; i++) {
-        const p = document.createElement("div");
-        p.className = "particle";
-        p.innerHTML = "❤️";
-        p.style.left = x + "px";
-        p.style.top = y + "px";
-        const dx = (Math.random() - 0.5) * 150 + "px";
-        const dy = (Math.random() - 0.5) * 150 + "px";
-        p.style.setProperty('--dx', dx);
-        p.style.setProperty('--dy', dy);
-        document.body.appendChild(p);
-        setTimeout(() => p.remove(), 600);
+    // На мобилках делаем чуть меньше осколков для производительности
+    const isMobile = window.innerWidth < 768;
+    const particlesCount = isMobile ? 5 : 8; 
+    
+    for (let i = 0; i < particlesCount; i++) {
+        const particle = document.createElement("div");
+        particle.className = "particle";
+        particle.innerHTML = "❤️";
+        particle.style.left = x + "px";
+        particle.style.top = y + "px";
+        particle.style.fontSize = isMobile ? "12px" : "16px";
+
+        // Разлет подстроен под размер экрана
+        const range = isMobile ? 100 : 200;
+        const dx = (Math.random() - 0.5) * range + "px";
+        const dy = (Math.random() - 0.5) * range + "px";
+        
+        particle.style.setProperty('--dx', dx);
+        particle.style.setProperty('--dy', dy);
+
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 600);
     }
 }
+// Определяем частоту появления в зависимости от ширины экрана
+// На широких экранах (планшеты/ПК) пускаем чаще, на узких — чуть реже
+const screenWidth = window.innerWidth;
+const spawnInterval = screenWidth > 1024 ? 250 : (screenWidth > 768 ? 350 : 450);
 
 setInterval(() => {
-    createHeart(Math.random() * window.innerWidth, window.innerHeight, false);
-}, 500);
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    
+    const types = ["❤️", "💖", "💕", "💗"];
+    heart.innerHTML = types[Math.floor(Math.random() * types.length)];
+    
+    const startX = Math.random() * 100;
+    heart.style.left = startX + "vw";
+    
+    // На планшете можно чуть увеличить максимальный размер сердечек
+    const size = (15 + Math.random() * (screenWidth > 768 ? 30 : 20));
+    heart.style.fontSize = size + "px";
+    
+    const duration = 6 + Math.random() * 6; 
+    heart.style.animationDuration = duration + "s";
+    
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        const xPos = (startX / 100) * window.innerWidth;
+        const yPos = window.innerHeight * 0.1; 
+        createExplosion(xPos, yPos); 
+        heart.remove();
+    }, duration * 1000);
+}, spawnInterval);
+
+
 </script>
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
 </body>
 </html>
-
-
-
 
 
 
